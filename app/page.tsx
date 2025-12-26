@@ -1,65 +1,162 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useState, useEffect } from 'react'
+import { Download } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { MetricsCard } from '@/components/dashboard/MetricsCard'
+import { CreateLinkForm } from '@/components/dashboard/CreateLinkForm'
+import { RecentLinks } from '@/components/dashboard/RecentLinks'
+import { ClickActivityChart } from '@/components/dashboard/ClickActivityChart'
+import { Send, Link2, Smartphone } from 'lucide-react'
+import { format, subMonths } from 'date-fns'
+import { downloadExcelReport } from '@/lib/excel-export'
+
+interface Link {
+  id: string
+  originalUrl: string
+  shortCode: string
+  createdAt: string
+  clickCount?: number
+}
+
+interface Analytics {
+  totalClicks: number
+  activeLinks: number
+  mobileTraffic: number
+  clicksByMonth: Record<string, number>
+}
+
+export default function DashboardPage() {
+  const [links, setLinks] = useState<Link[]>([])
+  const [analytics, setAnalytics] = useState<Analytics | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
+  const fetchData = async () => {
+    try {
+      const [linksRes, analyticsRes] = await Promise.all([
+        fetch('/api/links'),
+        fetch('/api/analytics'),
+      ])
+
+      if (linksRes.ok) {
+        const linksData = await linksRes.json()
+        setLinks(linksData.slice(0, 3)) // Show only recent 3
+      }
+
+      if (analyticsRes.ok) {
+        const analyticsData = await analyticsRes.json()
+        setAnalytics(analyticsData)
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  // Prepare chart data for last 7 months
+  const chartData = analytics
+    ? Object.entries(analytics.clicksByMonth)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([month, clicks]) => ({
+        month: format(new Date(month + '-01'), 'MMM'),
+        clicks: clicks as number,
+      }))
+    : []
+
+  // Calculate percentage changes (mock data for now)
+  const totalClicksChange = 2.5
+  const activeLinksChange = 4.1
+  const mobileTrafficChange = -1.2
+
+  const handleDownloadReport = () => {
+    if (!analytics || links.length === 0) {
+      alert('No data available to download')
+      return
+    }
+
+    // Fetch all links for the report
+    fetch('/api/links')
+      .then((res) => res.json())
+      .then((allLinks) => {
+        // Fetch full analytics
+        fetch('/api/analytics')
+          .then((res) => res.json())
+          .then((fullAnalytics) => {
+            downloadExcelReport(allLinks, fullAnalytics)
+          })
+          .catch((error) => {
+            console.error('Error fetching analytics:', error)
+            alert('Failed to download report')
+          })
+      })
+      .catch((error) => {
+        console.error('Error fetching links:', error)
+        alert('Failed to download report')
+      })
+  }
+
+  if (loading) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <div className="text-gray-500">Loading...</div>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <p className="mt-1 text-gray-600">Welcome back, here's your link overview.</p>
+        </div>
+        <Button onClick={handleDownloadReport}>
+          <Download className="h-4 w-4 mr-2" />
+          Download Report
+        </Button>
+      </div>
+
+      {/* Metrics Cards */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <MetricsCard
+          title="Total Clicks"
+          value={analytics?.totalClicks.toLocaleString() || '0'}
+          change={totalClicksChange}
+          icon={<Send className="h-6 w-6 text-blue-600" />}
+          iconBgColor="bg-blue-100"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        <MetricsCard
+          title="Active Links"
+          value={analytics?.activeLinks.toLocaleString() || '0'}
+          change={activeLinksChange}
+          icon={<Link2 className="h-6 w-6 text-purple-600" />}
+          iconBgColor="bg-purple-100"
+        />
+        <MetricsCard
+          title="Mobile Traffic"
+          value={`${analytics?.mobileTraffic || 0}%`}
+          change={mobileTrafficChange}
+          icon={<Smartphone className="h-6 w-6 text-pink-600" />}
+          iconBgColor="bg-pink-100"
+        />
+      </div>
+
+      {/* Create Link Form */}
+      <CreateLinkForm onLinkCreated={fetchData} />
+
+      {/* Charts and Recent Links */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <ClickActivityChart data={chartData} />
+        <RecentLinks links={links} baseUrl={baseUrl} />
+      </div>
     </div>
-  );
+  )
 }
