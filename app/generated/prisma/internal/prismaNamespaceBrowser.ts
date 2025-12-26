@@ -91,8 +91,12 @@ export const LinkAnalyticsScalarFieldEnum = {
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
   deviceType: 'deviceType',
+  browser: 'browser',
   country: 'country',
-  referrer: 'referrer'
+  city: 'city',
+  timezone: 'timezone',
+  referrer: 'referrer',
+  sourceType: 'sourceType'
 } as const
 
 export type LinkAnalyticsScalarFieldEnum = (typeof LinkAnalyticsScalarFieldEnum)[keyof typeof LinkAnalyticsScalarFieldEnum]

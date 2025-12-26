@@ -34,11 +34,18 @@ model LinkAnalytics {
   ipAddress  String?
   userAgent  String?
   deviceType String?
+  browser    String?
   country    String?
+  city       String?
+  timezone   String?
   referrer   String?
+  sourceType String? // Direct, Social, Email, Website
   link       Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
   @@index([linkId])
   @@index([clickedAt])
   @@index([deviceType])
+  @@index([country])
+  @@index([sourceType])
+  @@index([browser])
 }

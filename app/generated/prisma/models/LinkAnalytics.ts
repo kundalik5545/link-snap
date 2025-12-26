@@ -31,8 +31,12 @@ export type LinkAnalyticsMinAggregateOutputType = {
   ipAddress: string | null
   userAgent: string | null
   deviceType: string | null
+  browser: string | null
   country: string | null
+  city: string | null
+  timezone: string | null
   referrer: string | null
+  sourceType: string | null
 }
 
 export type LinkAnalyticsMaxAggregateOutputType = {
@@ -42,8 +46,12 @@ export type LinkAnalyticsMaxAggregateOutputType = {
   ipAddress: string | null
   userAgent: string | null
   deviceType: string | null
+  browser: string | null
   country: string | null
+  city: string | null
+  timezone: string | null
   referrer: string | null
+  sourceType: string | null
 }
 
 export type LinkAnalyticsCountAggregateOutputType = {
@@ -53,8 +61,12 @@ export type LinkAnalyticsCountAggregateOutputType = {
   ipAddress: number
   userAgent: number
   deviceType: number
+  browser: number
   country: number
+  city: number
+  timezone: number
   referrer: number
+  sourceType: number
   _all: number
 }
 
@@ -66,8 +78,12 @@ export type LinkAnalyticsMinAggregateInputType = {
   ipAddress?: true
   userAgent?: true
   deviceType?: true
+  browser?: true
   country?: true
+  city?: true
+  timezone?: true
   referrer?: true
+  sourceType?: true
 }
 
 export type LinkAnalyticsMaxAggregateInputType = {
@@ -77,8 +93,12 @@ export type LinkAnalyticsMaxAggregateInputType = {
   ipAddress?: true
   userAgent?: true
   deviceType?: true
+  browser?: true
   country?: true
+  city?: true
+  timezone?: true
   referrer?: true
+  sourceType?: true
 }
 
 export type LinkAnalyticsCountAggregateInputType = {
@@ -88,8 +108,12 @@ export type LinkAnalyticsCountAggregateInputType = {
   ipAddress?: true
   userAgent?: true
   deviceType?: true
+  browser?: true
   country?: true
+  city?: true
+  timezone?: true
   referrer?: true
+  sourceType?: true
   _all?: true
 }
 
@@ -172,8 +196,12 @@ export type LinkAnalyticsGroupByOutputType = {
   ipAddress: string | null
   userAgent: string | null
   deviceType: string | null
+  browser: string | null
   country: string | null
+  city: string | null
+  timezone: string | null
   referrer: string | null
+  sourceType: string | null
   _count: LinkAnalyticsCountAggregateOutputType | null
   _min: LinkAnalyticsMinAggregateOutputType | null
   _max: LinkAnalyticsMaxAggregateOutputType | null
@@ -204,8 +232,12 @@ export type LinkAnalyticsWhereInput = {
   ipAddress?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   userAgent?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   deviceType?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  browser?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   country?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  city?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  timezone?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   referrer?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  sourceType?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   link?: Prisma.XOR<Prisma.LinkScalarRelationFilter, Prisma.LinkWhereInput>
 }
 
@@ -216,8 +248,12 @@ export type LinkAnalyticsOrderByWithRelationInput = {
   ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
   deviceType?: Prisma.SortOrderInput | Prisma.SortOrder
+  browser?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
+  timezone?: Prisma.SortOrderInput | Prisma.SortOrder
   referrer?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceType?: Prisma.SortOrderInput | Prisma.SortOrder
   link?: Prisma.LinkOrderByWithRelationInput
 }
 
@@ -231,8 +267,12 @@ export type LinkAnalyticsWhereUniqueInput = Prisma.AtLeast<{
   ipAddress?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   userAgent?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   deviceType?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  browser?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   country?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  city?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  timezone?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   referrer?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  sourceType?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   link?: Prisma.XOR<Prisma.LinkScalarRelationFilter, Prisma.LinkWhereInput>
 }, "id">
 
@@ -243,8 +283,12 @@ export type LinkAnalyticsOrderByWithAggregationInput = {
   ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
   deviceType?: Prisma.SortOrderInput | Prisma.SortOrder
+  browser?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
+  timezone?: Prisma.SortOrderInput | Prisma.SortOrder
   referrer?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceType?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LinkAnalyticsCountOrderByAggregateInput
   _max?: Prisma.LinkAnalyticsMaxOrderByAggregateInput
   _min?: Prisma.LinkAnalyticsMinOrderByAggregateInput
@@ -260,8 +304,12 @@ export type LinkAnalyticsScalarWhereWithAggregatesInput = {
   ipAddress?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
   userAgent?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
   deviceType?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
+  browser?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
+  city?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
+  timezone?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
   referrer?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
+  sourceType?: Prisma.StringNullableWithAggregatesFilter<"LinkAnalytics"> | string | null
 }
 
 export type LinkAnalyticsCreateInput = {
@@ -270,8 +318,12 @@ export type LinkAnalyticsCreateInput = {
   ipAddress?: string | null
   userAgent?: string | null
   deviceType?: string | null
+  browser?: string | null
   country?: string | null
+  city?: string | null
+  timezone?: string | null
   referrer?: string | null
+  sourceType?: string | null
   link: Prisma.LinkCreateNestedOneWithoutAnalyticsInput
 }
 
@@ -282,8 +334,12 @@ export type LinkAnalyticsUncheckedCreateInput = {
   ipAddress?: string | null
   userAgent?: string | null
   deviceType?: string | null
+  browser?: string | null
   country?: string | null
+  city?: string | null
+  timezone?: string | null
   referrer?: string | null
+  sourceType?: string | null
 }
 
 export type LinkAnalyticsUpdateInput = {
@@ -292,8 +348,12 @@ export type LinkAnalyticsUpdateInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browser?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.LinkUpdateOneRequiredWithoutAnalyticsNestedInput
 }
 
@@ -304,8 +364,12 @@ export type LinkAnalyticsUncheckedUpdateInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browser?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LinkAnalyticsCreateManyInput = {
@@ -315,8 +379,12 @@ export type LinkAnalyticsCreateManyInput = {
   ipAddress?: string | null
   userAgent?: string | null
   deviceType?: string | null
+  browser?: string | null
   country?: string | null
+  city?: string | null
+  timezone?: string | null
   referrer?: string | null
+  sourceType?: string | null
 }
 
 export type LinkAnalyticsUpdateManyMutationInput = {
@@ -325,8 +393,12 @@ export type LinkAnalyticsUpdateManyMutationInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browser?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LinkAnalyticsUncheckedUpdateManyInput = {
@@ -336,8 +408,12 @@ export type LinkAnalyticsUncheckedUpdateManyInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browser?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LinkAnalyticsListRelationFilter = {
@@ -357,8 +433,12 @@ export type LinkAnalyticsCountOrderByAggregateInput = {
   ipAddress?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
   deviceType?: Prisma.SortOrder
+  browser?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   referrer?: Prisma.SortOrder
+  sourceType?: Prisma.SortOrder
 }
 
 export type LinkAnalyticsMaxOrderByAggregateInput = {
@@ -368,8 +448,12 @@ export type LinkAnalyticsMaxOrderByAggregateInput = {
   ipAddress?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
   deviceType?: Prisma.SortOrder
+  browser?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   referrer?: Prisma.SortOrder
+  sourceType?: Prisma.SortOrder
 }
 
 export type LinkAnalyticsMinOrderByAggregateInput = {
@@ -379,8 +463,12 @@ export type LinkAnalyticsMinOrderByAggregateInput = {
   ipAddress?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
   deviceType?: Prisma.SortOrder
+  browser?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   referrer?: Prisma.SortOrder
+  sourceType?: Prisma.SortOrder
 }
 
 export type LinkAnalyticsCreateNestedManyWithoutLinkInput = {
@@ -431,8 +519,12 @@ export type LinkAnalyticsCreateWithoutLinkInput = {
   ipAddress?: string | null
   userAgent?: string | null
   deviceType?: string | null
+  browser?: string | null
   country?: string | null
+  city?: string | null
+  timezone?: string | null
   referrer?: string | null
+  sourceType?: string | null
 }
 
 export type LinkAnalyticsUncheckedCreateWithoutLinkInput = {
@@ -441,8 +533,12 @@ export type LinkAnalyticsUncheckedCreateWithoutLinkInput = {
   ipAddress?: string | null
   userAgent?: string | null
   deviceType?: string | null
+  browser?: string | null
   country?: string | null
+  city?: string | null
+  timezone?: string | null
   referrer?: string | null
+  sourceType?: string | null
 }
 
 export type LinkAnalyticsCreateOrConnectWithoutLinkInput = {
@@ -481,8 +577,12 @@ export type LinkAnalyticsScalarWhereInput = {
   ipAddress?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   userAgent?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   deviceType?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  browser?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   country?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  city?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  timezone?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
   referrer?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
+  sourceType?: Prisma.StringNullableFilter<"LinkAnalytics"> | string | null
 }
 
 export type LinkAnalyticsCreateManyLinkInput = {
@@ -491,8 +591,12 @@ export type LinkAnalyticsCreateManyLinkInput = {
   ipAddress?: string | null
   userAgent?: string | null
   deviceType?: string | null
+  browser?: string | null
   country?: string | null
+  city?: string | null
+  timezone?: string | null
   referrer?: string | null
+  sourceType?: string | null
 }
 
 export type LinkAnalyticsUpdateWithoutLinkInput = {
@@ -501,8 +605,12 @@ export type LinkAnalyticsUpdateWithoutLinkInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browser?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LinkAnalyticsUncheckedUpdateWithoutLinkInput = {
@@ -511,8 +619,12 @@ export type LinkAnalyticsUncheckedUpdateWithoutLinkInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browser?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LinkAnalyticsUncheckedUpdateManyWithoutLinkInput = {
@@ -521,8 +633,12 @@ export type LinkAnalyticsUncheckedUpdateManyWithoutLinkInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browser?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -534,8 +650,12 @@ export type LinkAnalyticsSelect<ExtArgs extends runtime.Types.Extensions.Interna
   ipAddress?: boolean
   userAgent?: boolean
   deviceType?: boolean
+  browser?: boolean
   country?: boolean
+  city?: boolean
+  timezone?: boolean
   referrer?: boolean
+  sourceType?: boolean
   link?: boolean | Prisma.LinkDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["linkAnalytics"]>
 
@@ -546,8 +666,12 @@ export type LinkAnalyticsSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   ipAddress?: boolean
   userAgent?: boolean
   deviceType?: boolean
+  browser?: boolean
   country?: boolean
+  city?: boolean
+  timezone?: boolean
   referrer?: boolean
+  sourceType?: boolean
   link?: boolean | Prisma.LinkDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["linkAnalytics"]>
 
@@ -558,8 +682,12 @@ export type LinkAnalyticsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   ipAddress?: boolean
   userAgent?: boolean
   deviceType?: boolean
+  browser?: boolean
   country?: boolean
+  city?: boolean
+  timezone?: boolean
   referrer?: boolean
+  sourceType?: boolean
   link?: boolean | Prisma.LinkDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["linkAnalytics"]>
 
@@ -570,11 +698,15 @@ export type LinkAnalyticsSelectScalar = {
   ipAddress?: boolean
   userAgent?: boolean
   deviceType?: boolean
+  browser?: boolean
   country?: boolean
+  city?: boolean
+  timezone?: boolean
   referrer?: boolean
+  sourceType?: boolean
 }
 
-export type LinkAnalyticsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "linkId" | "clickedAt" | "ipAddress" | "userAgent" | "deviceType" | "country" | "referrer", ExtArgs["result"]["linkAnalytics"]>
+export type LinkAnalyticsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "linkId" | "clickedAt" | "ipAddress" | "userAgent" | "deviceType" | "browser" | "country" | "city" | "timezone" | "referrer" | "sourceType", ExtArgs["result"]["linkAnalytics"]>
 export type LinkAnalyticsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   link?: boolean | Prisma.LinkDefaultArgs<ExtArgs>
 }
@@ -597,8 +729,12 @@ export type $LinkAnalyticsPayload<ExtArgs extends runtime.Types.Extensions.Inter
     ipAddress: string | null
     userAgent: string | null
     deviceType: string | null
+    browser: string | null
     country: string | null
+    city: string | null
+    timezone: string | null
     referrer: string | null
+    sourceType: string | null
   }, ExtArgs["result"]["linkAnalytics"]>
   composites: {}
 }
@@ -1029,8 +1165,12 @@ export interface LinkAnalyticsFieldRefs {
   readonly ipAddress: Prisma.FieldRef<"LinkAnalytics", 'String'>
   readonly userAgent: Prisma.FieldRef<"LinkAnalytics", 'String'>
   readonly deviceType: Prisma.FieldRef<"LinkAnalytics", 'String'>
+  readonly browser: Prisma.FieldRef<"LinkAnalytics", 'String'>
   readonly country: Prisma.FieldRef<"LinkAnalytics", 'String'>
+  readonly city: Prisma.FieldRef<"LinkAnalytics", 'String'>
+  readonly timezone: Prisma.FieldRef<"LinkAnalytics", 'String'>
   readonly referrer: Prisma.FieldRef<"LinkAnalytics", 'String'>
+  readonly sourceType: Prisma.FieldRef<"LinkAnalytics", 'String'>
 }
     
 

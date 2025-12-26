@@ -2,6 +2,7 @@ import { UAParser } from "ua-parser-js";
 import prisma from "@/lib/prisma";
 
 export type DeviceType = "Desktop" | "Mobile" | "Tablet";
+export type SourceType = "Direct" | "Social" | "Email" | "Website";
 
 /**
  * Detect device type from user agent
@@ -47,6 +48,155 @@ export function getClientIp(headers: Headers): string | null {
 }
 
 /**
+ * Detect browser type from user agent
+ */
+export function detectBrowser(userAgent: string | null): string | null {
+  if (!userAgent) return null;
+
+  const parser = new UAParser(userAgent);
+  const browser = parser.getBrowser();
+
+  return browser.name || null;
+}
+
+/**
+ * Categorize referrer source
+ */
+export function categorizeSource(referrer: string | null): SourceType {
+  if (!referrer || referrer.trim() === "") {
+    return "Direct";
+  }
+
+  const referrerLower = referrer.toLowerCase();
+
+  // Social media platforms
+  const socialDomains = [
+    "twitter.com",
+    "x.com",
+    "linkedin.com",
+    "facebook.com",
+    "instagram.com",
+    "whatsapp.com",
+    "wa.me",
+    "t.me",
+    "reddit.com",
+    "pinterest.com",
+    "tiktok.com",
+    "youtube.com",
+    "snapchat.com",
+  ];
+
+  for (const domain of socialDomains) {
+    if (referrerLower.includes(domain)) {
+      return "Social";
+    }
+  }
+
+  // Email clients
+  const emailDomains = [
+    "mail.google.com",
+    "outlook.com",
+    "mail.yahoo.com",
+    "mail.aol.com",
+    "mail.com",
+    "gmail.com",
+    "yahoo.com",
+    "hotmail.com",
+    "icloud.com",
+    "protonmail.com",
+  ];
+
+  for (const domain of emailDomains) {
+    if (referrerLower.includes(domain)) {
+      return "Email";
+    }
+  }
+
+  // If it's a valid URL, it's a website
+  try {
+    new URL(referrer);
+    return "Website";
+  } catch {
+    return "Direct";
+  }
+}
+
+/**
+ * Get location data from IP address using ip-api.com (free tier)
+ */
+export async function getLocationFromIp(ipAddress: string | null): Promise<{
+  country: string | null;
+  city: string | null;
+  timezone: string | null;
+}> {
+  if (!ipAddress) {
+    return { country: null, city: null, timezone: null };
+  }
+
+  // Skip localhost and private IPs
+  if (
+    ipAddress === "127.0.0.1" ||
+    ipAddress === "::1" ||
+    ipAddress.startsWith("192.168.") ||
+    ipAddress.startsWith("10.") ||
+    ipAddress.startsWith("172.16.") ||
+    ipAddress.startsWith("172.17.") ||
+    ipAddress.startsWith("172.18.") ||
+    ipAddress.startsWith("172.19.") ||
+    ipAddress.startsWith("172.20.") ||
+    ipAddress.startsWith("172.21.") ||
+    ipAddress.startsWith("172.22.") ||
+    ipAddress.startsWith("172.23.") ||
+    ipAddress.startsWith("172.24.") ||
+    ipAddress.startsWith("172.25.") ||
+    ipAddress.startsWith("172.26.") ||
+    ipAddress.startsWith("172.27.") ||
+    ipAddress.startsWith("172.28.") ||
+    ipAddress.startsWith("172.29.") ||
+    ipAddress.startsWith("172.30.") ||
+    ipAddress.startsWith("172.31.")
+  ) {
+    return { country: null, city: null, timezone: null };
+  }
+
+  try {
+    // Use ip-api.com free tier (45 requests/minute)
+    // Create abort controller for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+
+    const response = await fetch(`http://ip-api.com/json/${ipAddress}?fields=status,country,city,timezone`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      return { country: null, city: null, timezone: null };
+    }
+
+    const data = await response.json();
+    
+    if (data.status === 'success') {
+      return {
+        country: data.country || null,
+        city: data.city || null,
+        timezone: data.timezone || null,
+      };
+    }
+  } catch (error) {
+    // Silently fail - don't block the request if geo lookup fails
+    console.error("Error looking up IP location:", error);
+  }
+
+  return { country: null, city: null, timezone: null };
+}
+
+/**
  * Track a click event
  */
 export async function trackClick(
@@ -58,6 +208,11 @@ export async function trackClick(
   }
 ) {
   const deviceType = detectDeviceType(request.userAgent);
+  const browser = detectBrowser(request.userAgent);
+  const sourceType = categorizeSource(request.referrer);
+  
+  // Get location data (async, but we'll wait for it)
+  const location = await getLocationFromIp(request.ipAddress);
 
   await prisma.linkAnalytics.create({
     data: {
@@ -65,7 +220,12 @@ export async function trackClick(
       userAgent: request.userAgent,
       ipAddress: request.ipAddress,
       deviceType,
+      browser,
       referrer: request.referrer,
+      sourceType,
+      country: location.country,
+      city: location.city,
+      timezone: location.timezone,
     },
   });
 }
@@ -96,11 +256,27 @@ export async function getLinkAnalytics(linkId: string) {
     return acc;
   }, {} as Record<string, number>);
 
+  // Browser distribution
+  const browserDistribution = analytics.reduce((acc, a) => {
+    const browser = a.browser || "Unknown";
+    acc[browser] = (acc[browser] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Source type distribution
+  const sourceDistribution = analytics.reduce((acc, a) => {
+    const source = a.sourceType || "Unknown";
+    acc[source] = (acc[source] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
   return {
     totalClicks,
     uniqueVisitors,
     deviceDistribution,
     countryDistribution,
+    browserDistribution,
+    sourceDistribution,
     clicks: analytics,
   };
 }
@@ -141,6 +317,20 @@ export async function getAggregatedAnalytics() {
   const countryDistribution = analytics.reduce((acc, a) => {
     const country = a.country || "Unknown";
     acc[country] = (acc[country] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Browser distribution
+  const browserDistribution = analytics.reduce((acc, a) => {
+    const browser = a.browser || "Unknown";
+    acc[browser] = (acc[browser] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Source type distribution
+  const sourceDistribution = analytics.reduce((acc, a) => {
+    const source = a.sourceType || "Unknown";
+    acc[source] = (acc[source] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
@@ -192,6 +382,8 @@ export async function getAggregatedAnalytics() {
     mobileTraffic: Number(mobileTraffic.toFixed(1)),
     deviceDistribution,
     countryDistribution,
+    browserDistribution,
+    sourceDistribution,
     clicksByMonth,
     dailyClicks,
     uniqueVisitorsDaily,

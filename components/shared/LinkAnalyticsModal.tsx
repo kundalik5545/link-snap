@@ -23,10 +23,17 @@ interface LinkAnalytics {
     uniqueVisitors: number
     deviceDistribution: Record<string, number>
     countryDistribution: Record<string, number>
+    browserDistribution?: Record<string, number>
+    sourceDistribution?: Record<string, number>
     clicks: Array<{
         clickedAt: string
         deviceType: string | null
         country: string | null
+        city: string | null
+        timezone: string | null
+        browser: string | null
+        sourceType: string | null
+        referrer: string | null
         ipAddress: string | null
     }>
 }
@@ -67,7 +74,15 @@ export function LinkAnalyticsModal({
 
     return (
         <Dialog open={!!link} onOpenChange={onClose}>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent
+                id="link-analytics-modal"
+                className="max-h-[90vh] overflow-y-auto"
+                style={{
+                    maxWidth: 'min(95vw, 1280px)',
+                    width: 'min(95vw, 1280px)',
+                    minWidth: 'min(95vw, 1280px)'
+                }}
+            >
                 <DialogHeader>
                     <DialogTitle>Link Analytics</DialogTitle>
                     <DialogDescription>
@@ -191,6 +206,76 @@ export function LinkAnalyticsModal({
                             </Card>
                         )}
 
+                        {/* Browser Distribution */}
+                        {analytics.browserDistribution && Object.keys(analytics.browserDistribution).length > 0 && (
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-sm">Browser Distribution</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="space-y-2">
+                                        {Object.entries(analytics.browserDistribution)
+                                            .sort(([, a], [, b]) => b - a)
+                                            .map(([browser, count]) => {
+                                                const percentage =
+                                                    (count / analytics.totalClicks) * 100
+                                                return (
+                                                    <div key={browser} className="space-y-1">
+                                                        <div className="flex items-center justify-between text-sm">
+                                                            <span className="text-gray-700">{browser}</span>
+                                                            <span className="font-medium text-gray-900">
+                                                                {count} ({percentage.toFixed(1)}%)
+                                                            </span>
+                                                        </div>
+                                                        <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                                                            <div
+                                                                className="h-full bg-green-600 rounded-full"
+                                                                style={{ width: `${percentage}%` }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+
+                        {/* Source Distribution */}
+                        {analytics.sourceDistribution && Object.keys(analytics.sourceDistribution).length > 0 && (
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-sm">Traffic Sources</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="space-y-2">
+                                        {Object.entries(analytics.sourceDistribution)
+                                            .sort(([, a], [, b]) => b - a)
+                                            .map(([source, count]) => {
+                                                const percentage =
+                                                    (count / analytics.totalClicks) * 100
+                                                return (
+                                                    <div key={source} className="space-y-1">
+                                                        <div className="flex items-center justify-between text-sm">
+                                                            <span className="text-gray-700">{source}</span>
+                                                            <span className="font-medium text-gray-900">
+                                                                {count} ({percentage.toFixed(1)}%)
+                                                            </span>
+                                                        </div>
+                                                        <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                                                            <div
+                                                                className="h-full bg-purple-600 rounded-full"
+                                                                style={{ width: `${percentage}%` }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+
                         {/* Recent Clicks */}
                         {analytics.clicks.length > 0 && (
                             <Card>
@@ -204,13 +289,40 @@ export function LinkAnalyticsModal({
                                                 key={index}
                                                 className="flex items-center justify-between text-sm border-b pb-2 last:border-0"
                                             >
-                                                <div>
-                                                    <p className="text-gray-900">
+                                                <div className="flex-1">
+                                                    <p className="text-gray-900 font-medium">
                                                         {format(new Date(click.clickedAt), 'PPp')}
                                                     </p>
-                                                    <p className="text-xs text-gray-500">
-                                                        {click.deviceType || 'Unknown'} • {click.country || 'Unknown'}
-                                                    </p>
+                                                    <div className="flex flex-wrap gap-2 mt-1">
+                                                        <p className="text-xs text-gray-500">
+                                                            {click.deviceType || 'Unknown'} Device
+                                                        </p>
+                                                        {click.browser && (
+                                                            <p className="text-xs text-gray-500">
+                                                                • {click.browser}
+                                                            </p>
+                                                        )}
+                                                        {click.country && (
+                                                            <p className="text-xs text-gray-500">
+                                                                • {click.country}
+                                                            </p>
+                                                        )}
+                                                        {click.city && (
+                                                            <p className="text-xs text-gray-500">
+                                                                • {click.city}
+                                                            </p>
+                                                        )}
+                                                        {click.sourceType && (
+                                                            <p className="text-xs text-blue-600 font-medium">
+                                                                • {click.sourceType}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                    {click.referrer && (
+                                                        <p className="text-xs text-gray-400 mt-1 truncate max-w-md">
+                                                            From: {click.referrer}
+                                                        </p>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
