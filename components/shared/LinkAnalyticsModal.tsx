@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { format } from 'date-fns'
+import { getBaseUrl } from '@/lib/config'
 
 interface Link {
     id: string
@@ -40,13 +41,11 @@ interface LinkAnalytics {
 
 interface LinkAnalyticsModalProps {
     link: Link | null
-    baseUrl: string
     onClose: () => void
 }
 
 export function LinkAnalyticsModal({
     link,
-    baseUrl,
     onClose,
 }: LinkAnalyticsModalProps) {
     const [analytics, setAnalytics] = useState<LinkAnalytics | null>(null)
@@ -70,6 +69,7 @@ export function LinkAnalyticsModal({
 
     if (!link) return null
 
+    const baseUrl = getBaseUrl()
     const shortUrl = `${baseUrl}/${link.shortCode}`
 
     return (

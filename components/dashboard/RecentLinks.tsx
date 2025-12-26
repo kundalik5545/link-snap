@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
 import { QRCodeModal } from '@/components/shared/QRCodeModal'
 import { LinkAnalyticsModal } from '@/components/shared/LinkAnalyticsModal'
+import { getBaseUrl } from '@/lib/config'
 
 interface Link {
     id: string
@@ -19,10 +20,10 @@ interface Link {
 
 interface RecentLinksProps {
     links: Link[]
-    baseUrl: string
 }
 
-export function RecentLinks({ links, baseUrl }: RecentLinksProps) {
+export function RecentLinks({ links }: RecentLinksProps) {
+    const baseUrl = getBaseUrl()
     const [selectedLink, setSelectedLink] = useState<Link | null>(null)
     const [analyticsLink, setAnalyticsLink] = useState<Link | null>(null)
     const router = useRouter()
@@ -96,7 +97,6 @@ export function RecentLinks({ links, baseUrl }: RecentLinksProps) {
             {selectedLink && (
                 <QRCodeModal
                     link={selectedLink}
-                    baseUrl={baseUrl}
                     onClose={() => setSelectedLink(null)}
                 />
             )}
@@ -104,7 +104,6 @@ export function RecentLinks({ links, baseUrl }: RecentLinksProps) {
             {analyticsLink && (
                 <LinkAnalyticsModal
                     link={analyticsLink}
-                    baseUrl={baseUrl}
                     onClose={() => setAnalyticsLink(null)}
                 />
             )}

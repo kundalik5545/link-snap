@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { QRCodeSVG } from 'qrcode.react'
+import { getBaseUrl } from '@/lib/config'
 
 interface Link {
     id: string
@@ -19,12 +20,12 @@ interface Link {
 
 interface QRCodeModalProps {
     link: Link
-    baseUrl: string
     onClose: () => void
 }
 
-export function QRCodeModal({ link, baseUrl, onClose }: QRCodeModalProps) {
+export function QRCodeModal({ link, onClose }: QRCodeModalProps) {
     const qrRef = useRef<HTMLDivElement>(null)
+    const baseUrl = getBaseUrl()
     const shortUrl = `${baseUrl}/${link.shortCode}`
 
     const handleDownload = () => {

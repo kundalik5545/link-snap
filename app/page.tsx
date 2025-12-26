@@ -10,6 +10,7 @@ import { ClickActivityChart } from '@/components/dashboard/ClickActivityChart'
 import { Send, Link2, Smartphone } from 'lucide-react'
 import { format, subMonths } from 'date-fns'
 import { downloadExcelReport } from '@/lib/excel-export'
+import { getBaseUrl } from '@/lib/config'
 
 interface Link {
   id: string
@@ -31,7 +32,7 @@ export default function DashboardPage() {
   const [analytics, setAnalytics] = useState<Analytics | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  const baseUrl = getBaseUrl()
 
   const fetchData = async () => {
     try {
@@ -155,7 +156,7 @@ export default function DashboardPage() {
       {/* Charts and Recent Links */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <ClickActivityChart data={chartData} />
-        <RecentLinks links={links} baseUrl={baseUrl} />
+        <RecentLinks links={links} />
       </div>
     </div>
   )
