@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function ProfilePage() {
     return (
-        <div className="p-6 space-y-6">
+        <div className="p-4 md:p-6 space-y-4 md:space-y-6">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
-                <p className="mt-1 text-gray-600">Manage your account settings and preferences.</p>
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Profile</h1>
+                <p className="mt-1 text-sm md:text-base text-gray-600">Manage your account settings and preferences.</p>
             </div>
 
             <Card>

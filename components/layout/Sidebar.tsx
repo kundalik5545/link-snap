@@ -15,7 +15,7 @@ export function Sidebar() {
     const pathname = usePathname()
 
     return (
-        <div className="flex h-screen w-64 flex-col border-r bg-white">
+        <div className="hidden md:flex h-screen w-64 flex-col border-r bg-white">
             {/* Logo */}
             <div className="flex h-16 items-center gap-3 px-6">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600">

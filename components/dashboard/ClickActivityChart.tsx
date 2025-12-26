@@ -25,8 +25,9 @@ export function ClickActivityChart({ data }: ClickActivityChartProps) {
                 <CardTitle>Click Activity</CardTitle>
                 <CardDescription>Clicks vs Impressions over last 7 months</CardDescription>
             </CardHeader>
-            <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+            <CardContent className="px-2 md:px-6">
+                <div className="h-[250px] md:h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={data}>
                         <defs>
                             <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
@@ -61,7 +62,8 @@ export function ClickActivityChart({ data }: ClickActivityChartProps) {
                             fill="url(#colorClicks)"
                         />
                     </AreaChart>
-                </ResponsiveContainer>
+                    </ResponsiveContainer>
+                </div>
             </CardContent>
         </Card>
     )

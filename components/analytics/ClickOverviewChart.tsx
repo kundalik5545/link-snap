@@ -33,8 +33,9 @@ export function ClickOverviewChart({ data }: ClickOverviewChartProps) {
                 <CardTitle>Click Overview</CardTitle>
                 <CardDescription>Daily clicks vs unique visitors</CardDescription>
             </CardHeader>
-            <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+            <CardContent className="px-2 md:px-6">
+                <div className="h-[250px] md:h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={formattedData}>
                         <defs>
                             <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
@@ -83,7 +84,8 @@ export function ClickOverviewChart({ data }: ClickOverviewChartProps) {
                             name="Unique visitors"
                         />
                     </LineChart>
-                </ResponsiveContainer>
+                    </ResponsiveContainer>
+                </div>
             </CardContent>
         </Card>
     )

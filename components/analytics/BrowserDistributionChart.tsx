@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
-interface DeviceDistributionChartProps {
+interface BrowserDistributionChartProps {
     data: Array<{
         name: string
         value: number
@@ -11,14 +11,14 @@ interface DeviceDistributionChartProps {
     }>
 }
 
-const COLORS = ['#3b82f6', '#60a5fa', '#93c5fd']
+const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16']
 
-export function DeviceDistributionChart({ data }: DeviceDistributionChartProps) {
+export function BrowserDistributionChart({ data }: BrowserDistributionChartProps) {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Device Distribution</CardTitle>
-                <CardDescription>Traffic sources by device type</CardDescription>
+                <CardTitle>Browser Distribution</CardTitle>
+                <CardDescription>Traffic sources by browser type</CardDescription>
             </CardHeader>
             <CardContent className="px-2 md:px-6">
                 <div className="flex items-center justify-center">
