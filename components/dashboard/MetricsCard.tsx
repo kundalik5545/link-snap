@@ -23,8 +23,8 @@ export function MetricsCard({
     const changeColor = isPositive ? 'text-green-600' : 'text-red-600'
 
     return (
-        <Card>
-            <CardContent className="flex items-center justify-between p-4 md:p-6">
+        <Card >
+            <CardContent className="flex items-center justify-between p-4 md:p-4 px-6">
                 <div className="flex-1 min-w-0">
                     <p className="text-xs md:text-sm font-medium text-gray-600">{title}</p>
                     <p className="mt-1 md:mt-2 text-2xl md:text-3xl font-bold text-gray-900">{value}</p>

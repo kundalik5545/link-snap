@@ -11,6 +11,7 @@ import { Send, Link2, Smartphone } from 'lucide-react'
 import { format, subMonths } from 'date-fns'
 import { downloadExcelReport } from '@/lib/excel-export'
 import { getBaseUrl } from '@/lib/config'
+import { TestCard } from '@/components/dashboard/TestCard'
 
 interface Link {
   id: string
@@ -112,12 +113,12 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+    <div className="p-4 md:p-6 space-y-4 md:space-y-10 container mx-auto max-w-7xl bg-color-[#f8fafc]">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="mt-1 text-sm md:text-base text-gray-600">Welcome back, here's your link overview.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+          <p className="text-muted-foreground mt-1">Welcome back, here's your link overview.</p>
         </div>
         <Button onClick={handleDownloadReport} className="w-full md:w-auto">
           <Download className="h-4 w-4 mr-2" />
@@ -127,7 +128,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 gap-3 md:gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <MetricsCard
           title="Total Clicks"
           value={analytics?.totalClicks.toLocaleString() || '0'}
@@ -155,7 +156,7 @@ export default function DashboardPage() {
       <CreateLinkForm onLinkCreated={fetchData} />
 
       {/* Charts and Recent Links */}
-      <div className="grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <ClickActivityChart data={chartData} />
         <RecentLinks links={links} />
       </div>

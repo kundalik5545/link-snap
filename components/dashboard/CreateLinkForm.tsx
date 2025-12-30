@@ -60,7 +60,7 @@ export function CreateLinkForm({ onLinkCreated }: { onLinkCreated?: () => void }
                             <Input
                                 id="url"
                                 type="url"
-                                placeholder="https://example.com/very/long/path"
+                                placeholder="Paste your long URL here (e.g., https://example.com/very/long/path)"
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
                                 className="pl-10"
